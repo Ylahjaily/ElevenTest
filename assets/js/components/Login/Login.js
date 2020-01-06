@@ -1,7 +1,4 @@
 import React  from 'react';
-import {Route, Switch,Redirect, Link, withRouter} from 'react-router-dom';
-
-import Signup from '../Signup/Signup';
 import './Login.css';
 
 class Login extends React.Component
