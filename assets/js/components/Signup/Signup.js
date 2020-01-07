@@ -1,5 +1,6 @@
 import React from 'react';
 import './Signup.css';
+import postUser from "../../services/postData";
 
 class Signup extends React.Component
 {
@@ -16,26 +17,7 @@ class Signup extends React.Component
     }
 
     signup(){
-        let baseUrl = 'http://localhost:81/users/login';
-
-        return new Promise((resolve,reject) => {
-            fetch(baseUrl, {
-                method : 'POST',
-
-                body : JSON.stringify(this.state),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-
-            })
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    resolve(responseJson)
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        })
+        postUser(this.state).then()
     }
 
     onChange(e){
@@ -59,7 +41,7 @@ class Signup extends React.Component
                 <label>password</label>
                 <input type='password' name = 'password' placeholder='paswword' onChange={this.onChange} />
 
-                <input type = 'submit' value ='Login' onClick={this.signup}/>
+                <input type = 'submit' value ='Sign Up' onClick={this.signup}/>
             </div>
         );
     }
