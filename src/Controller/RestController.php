@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class RestController extends AbstractFOSRestController
 {
@@ -33,7 +34,7 @@ class RestController extends AbstractFOSRestController
     ];
 
     /**
-     * @Rest\Post("/users/login")
+     * @Rest\Post("/users/signup")
      * @ParamConverter("user", converter="fos_rest.request_body")
      */
     public function register(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder,TokenAuthenticator $authenticator)
@@ -53,4 +54,21 @@ class RestController extends AbstractFOSRestController
         $response->headers->set('Access-Control-Allow-Origin', '*');
         return $this->view($user);
     }
+
+    /**
+     * @Rest\Get("/users/api")
+     */
+    public function getApiUsers(SerializerInterface $serializer)
+    {
+        $users = $this->userRepository->findAll();
+
+        $data = $serializer->serialize($users, 'json');
+
+        $response = new Response();
+        $response->setContent($data);
+        //$response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
+    }
+
 }
