@@ -6,11 +6,8 @@ class Signup extends React.Component
     constructor(props){
         super(props)
         this.state = {
-            firstname : '',
-            lastname : '',
+            name : '',
             email : '',
-            address : '',
-            country : '',
             password : ''
         }
         this.signup = this.signup.bind(this);
@@ -53,20 +50,11 @@ class Signup extends React.Component
             <div>
                 <h1>Sign up</h1>
 
-                <label>firstname</label>
-                <input type='text' name = 'firstname' placeholder='firstname' onChange={this.onChange}/>
-
-                <label>lastname</label>
-                <input type='text' name = 'lastname' placeholder='lastname' onChange={this.onChange} />
+                <label>Name</label>
+                <input type='text' name = 'name' placeholder='name' onChange={this.onChange}/>
 
                 <label>email</label>
                 <input type='text' name = 'email' placeholder='email' onChange={this.onChange}/>
-
-                <label>country</label>
-                <input type='text' name = 'country' placeholder='country' onChange={this.onChange} />
-
-                <label>adress</label>
-                <input type='text' name = 'address' placeholder='address' onChange={this.onChange} />
 
                 <label>password</label>
                 <input type='password' name = 'password' placeholder='paswword' onChange={this.onChange} />
@@ -76,6 +64,5 @@ class Signup extends React.Component
         );
     }
 }
-
 
 export default Signup;
