@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Security\TokenAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -26,11 +27,8 @@ class RestController extends AbstractFOSRestController
     }
 
     static private $postUserRequiredAttributes = [
-        'firstname' => 'setFirstname',
-        'lastname' => 'setLastname',
+        'name' => 'setName',
         'email' => 'setEmail',
-        'address' => 'setAddress',
-        'country' => 'setCountry',
         'password' => 'setPassword'
     ];
 
@@ -38,7 +36,7 @@ class RestController extends AbstractFOSRestController
      * @Rest\Post("/users/login")
      * @ParamConverter("user", converter="fos_rest.request_body")
      */
-    public function register(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder)
+    public function register(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder,TokenAuthenticator $authenticator)
     {
         foreach(static::$postUserRequiredAttributes as $attribute => $setter) {
             if(is_null($request->get($attribute))) {
@@ -46,6 +44,7 @@ class RestController extends AbstractFOSRestController
             }
             $user->$setter($request->get($attribute));
         }
+        $user->setApiKey($authenticator->generateApiKey());
         $password = $passwordEncoder->encodePassword($user, $user->getPassword());
         $user->setPassword($password);
         $this->em->persist($user);
