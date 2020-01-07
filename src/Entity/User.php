@@ -21,22 +21,12 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $firstname;
+    private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
-    private $lastname;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $country;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $address;
+    private $apiKey;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -62,51 +52,29 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getFirstname(): ?string
+    /**
+     * @return mixed
+     */
+    public function getName()
     {
-        return $this->firstname;
+        return $this->name;
     }
 
-    public function setFirstname(string $firstname): self
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
     {
-        $this->firstname = $firstname;
-
-        return $this;
+        $this->name = $name;
     }
 
-    public function getLastname(): ?string
+    public function getApiKey(): ?string
     {
-        return $this->lastname;
+        return $this->apiKey;
     }
-
-    public function setLastname(string $lastname): self
+    public function setApiKey(string $apiKey): self
     {
-        $this->lastname = $lastname;
-
-        return $this;
-    }
-
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(string $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(string $address): self
-    {
-        $this->address = $address;
-
+        $this->apiKey = $apiKey;
         return $this;
     }
 
@@ -175,5 +143,4 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-
 }
