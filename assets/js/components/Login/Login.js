@@ -9,13 +9,13 @@ class Login extends React.Component
             <div>
                 <h1>Login</h1>
 
-                <label>adress</label>
+                <label>Email</label>
                 <input type='email' name = 'email' placeholder='email'  />
 
-                <label>password</label>
+                <label>Password</label>
                 <input type='password' name = 'password' placeholder='paswword' />
 
-                <input type = 'submit' value ='Login' onClick={this.signup}/>
+                <input type = 'submit' value ='Login' />
             </div>
         )
     }
