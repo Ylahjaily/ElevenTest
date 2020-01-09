@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -15,11 +18,13 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"users", "posts"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"users", "posts"})
      */
     private $name;
 
@@ -35,16 +40,25 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"users", "posts"})
      */
     private $email;
+
 
     /**
      * @ORM\Column(type="array")
      */
     private $roles = [];
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="post_author")
+     * @Groups("users")
+     */
+    private $posts;
+
     public function __construct(){
         $this->roles = array('ROLE_USER');
+        $this->posts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,6 +138,37 @@ class User implements UserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+        return $this;
+    }
+
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setPostAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->contains($post)) {
+            $this->posts->removeElement($post);
+            // set the owning side to null (unless already changed)
+            if ($post->getPostAuthor() === $this) {
+                $post->setPostAuthor(null);
+            }
+        }
+
         return $this;
     }
 

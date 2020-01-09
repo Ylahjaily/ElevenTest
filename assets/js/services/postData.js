@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const postUser = (userdata) => {
     const options = {
-        url: 'http://localhost:81/users/signup',
+        url: 'http://localhost:81/register',
         method: 'POST',
         headers: {
             'Accept': 'application/json',

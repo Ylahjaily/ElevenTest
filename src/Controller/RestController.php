@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use App\Security\TokenAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,9 +22,10 @@ class RestController extends AbstractFOSRestController
     private $userRepository;
     private $em;
 
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $em)
+    public function __construct(UserRepository $userRepository,PostRepository $postRepository, EntityManagerInterface $em)
     {
         $this->userRepository = $userRepository;
+        $this->postRepository = $postRepository;
         $this->em = $em;
     }
 
@@ -34,7 +36,7 @@ class RestController extends AbstractFOSRestController
     ];
 
     /**
-     * @Rest\Post("/users/signup")
+     * @Rest\Post("/register")
      * @ParamConverter("user", converter="fos_rest.request_body")
      */
     public function register(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder,TokenAuthenticator $authenticator)
@@ -56,19 +58,23 @@ class RestController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Get("/users/api")
-     */
+ * @Rest\Get("/api/users")
+ * @Rest\View(serializerGroups={"users"})
+ */
     public function getApiUsers(SerializerInterface $serializer)
     {
         $users = $this->userRepository->findAll();
+        return $this->view($users);
+    }
 
-        $data = $serializer->serialize($users, 'json');
-
-        $response = new Response();
-        $response->setContent($data);
-        //$response->headers->set('Content-Type', 'application/json');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        return $response;
+    /**
+     * @Rest\Get("/api/posts")
+     * @Rest\View(serializerGroups={"posts"})
+     */
+    public function getApiPosts()
+    {
+        $users = $this->postRepository->findAll();
+        return $this->view($users);
     }
 
 }

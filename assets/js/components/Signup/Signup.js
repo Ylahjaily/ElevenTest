@@ -17,7 +17,7 @@ class Signup extends React.Component
     }
 
     signup(){
-        postUser(this.state).then()
+        postUser(this.state)
     }
 
     onChange(e){
@@ -48,3 +48,4 @@ class Signup extends React.Component
 }
 
 export default Signup;
+
