@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Userslist from "../UsersList/Userslist";
 
 class Users extends React.Component
 {
@@ -22,28 +23,35 @@ class Users extends React.Component
     getUsers()
     {
         axios.get(`http://localhost:81/api/users`).then(response => {
-            console.log(response)
             this.setState({
-                'items' : response.data,
-                'isLoaded' : true,
-                'error' : null
+                'items': response.data,
+                'isLoaded': true,
+                'error': null
             })
-            console.log(this.state.items)
+        },
+        (error) => {
+            this.setState({
+                isLoaded: true,
+                error : error
+            })
         })
     }
 
     render()
     {
+        const { error, isLoaded, items } = this.state;
+        if (error) {
+            return <div>Erreur : {error.message}</div>
+        }
+        else if (!isLoaded) {
+            return (<div>Loading ...</div>)
+        }
         return (
             <div>
-                <h1>Users</h1>
-                <button onClick = {this.getUsers}>
-                    See Users
-                </button>
+                <Userslist items = {items} />
             </div>
         );
     }
 }
-
 
 export default Users;
