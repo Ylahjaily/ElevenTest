@@ -1,10 +1,10 @@
 import React  from 'react';
-import {Route, Switch, Link} from 'react-router-dom';
-import Login from "../Login/Login";
-import Signup from '../Signup/Signup';
-import Users from "../Users/Users";
-import Forum from "../Forum/Forum";
 import './Home.css';
+import {Link, Switch, Route} from 'react-router-dom'
+import UsersPage from "../UsersPage/UsersPage";
+import SignUpForm from "../UsersPage/SignUpForm";
+import PostsPage from "../PostPage/PostsPage";
+import AddNewPostForm from "../PostPage/AddNewPostForm";
 
 class Home extends React.Component
 {
@@ -12,18 +12,20 @@ class Home extends React.Component
     {
         return (
             <div>
-                <nav>
-                    <Link className={"nav-link"} to={"/login"}> Login </Link>
-                    <Link className={"nav-link"} to={"/signup"}> Sign Up </Link>
-                    <Link className={"nav-link"} to={"/astronautes"}> Astronautes </Link>
-                    <Link className={"nav-link"} to={"/astrochat"}> AstroChat </Link>
-                </nav>
+
+                <h1>Home page</h1>
+
+                <Link to={'/users'}> Users</Link>
+                <Link to={'/signup'}> Sign up</Link>
+                <Link to={'/post/new'}> Add post</Link>
+                <Link to={'/posts'}>Posts </Link>
+
 
                 <Switch>
-                    <Route path="/login" component={Login} />
-                    <Route path="/signup" component={Signup} />
-                    <Route path="/astronautes" component={Users} />
-                    <Route path="/astrochat" component={Forum} />
+                    <Route path="/users" component={UsersPage} />
+                    <Route path="/signup" component={SignUpForm} />
+                    <Route path="/post/new" component={AddNewPostForm} />
+                    <Route path="/posts" component={PostsPage} />
                 </Switch>
             </div>
         )

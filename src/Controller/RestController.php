@@ -62,7 +62,7 @@ class RestController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post("/api/message/post")
+     * @Rest\Post("/api/post/new")
      * @ParamConverter("post", converter="fos_rest.request_body")
      */
     public function postApiMessage(Request $request, Post $post)
