@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Postslist from "../PostsList/Postslist";
+import Message from "../Message/Message";
 
 class Forum extends React.Component
 {
@@ -18,6 +19,7 @@ class Forum extends React.Component
     componentDidMount() {
         this.getPosts();
     }
+
 
     getPosts()
     {
@@ -47,6 +49,7 @@ class Forum extends React.Component
         }
         return (
             <div>
+                <Message />
                 <Postslist items = {items} />
             </div>
         );

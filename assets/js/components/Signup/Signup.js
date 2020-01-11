@@ -1,6 +1,6 @@
 import React from 'react';
 import './Signup.css';
-import postUser from "../../services/postData";
+import axios from "axios";
 
 class Signup extends React.Component
 {
@@ -9,15 +9,27 @@ class Signup extends React.Component
         this.state = {
             name : '',
             email : '',
-            password : ''
+            password : '',
         }
         this.signup = this.signup.bind(this);
         this.onChange = this.onChange.bind(this);
-
     }
 
     signup(){
-        postUser(this.state)
+        const options = {
+            url: 'http://localhost:81/register',
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json;charset=UTF-8',
+            },
+            data: this.state
+        }
+
+        axios(options).then(response => {
+            sessionStorage.setItem('userdata',JSON.stringify(response.data))
+
+        })
     }
 
     onChange(e){

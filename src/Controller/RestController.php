@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
 use App\Entity\User;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
@@ -35,6 +36,11 @@ class RestController extends AbstractFOSRestController
         'password' => 'setPassword'
     ];
 
+    static private $postMessageRequiredAttributes = [
+        'wording' => 'setWording',
+    ];
+
+
     /**
      * @Rest\Post("/register")
      * @ParamConverter("user", converter="fos_rest.request_body")
@@ -52,16 +58,32 @@ class RestController extends AbstractFOSRestController
         $user->setPassword($password);
         $this->em->persist($user);
         $this->em->flush();
-        $response = new Response();
-        $response->headers->set('Access-Control-Allow-Origin', '*');
         return $this->view($user);
+    }
+
+    /**
+     * @Rest\Post("/api/message/post")
+     * @ParamConverter("post", converter="fos_rest.request_body")
+     */
+    public function postApiMessage(Request $request, Post $post)
+    {
+
+        foreach(static::$postMessageRequiredAttributes as $attribute => $setter) {
+            if(is_null($request->get($attribute))) {
+                continue;
+            }
+            $post->$setter($request->get($attribute));
+        }
+        $this->em->persist($post);
+        $this->em->flush();
+        return $this->view($post);
     }
 
     /**
  * @Rest\Get("/api/users")
  * @Rest\View(serializerGroups={"users"})
  */
-    public function getApiUsers(SerializerInterface $serializer)
+    public function getApiUsers()
     {
         $users = $this->userRepository->findAll();
         return $this->view($users);

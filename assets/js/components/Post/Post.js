@@ -12,7 +12,6 @@ class Post extends React.Component
         return (
             <div className = "post-card">
                 <h1>{this.props.item.wording}</h1>
-                <p>{this.props.item.post_author.name}</p>
             </div>
         )
     }
