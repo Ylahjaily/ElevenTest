@@ -21,7 +21,7 @@
   <li> docker-compose up -d </li>
   <li> docker-compose exec web composer install </li>
   <li> docker-compose exec web php bin/console doctrine:database:create </li>
-  <li> docker-compose exec web php bin/console mdoctrine:schema:update </li> 
+  <li> docker-compose exec web php bin/console doctrine:schema:update --force </li> 
   <li>yarn install </li>
   <li>yarn run webpack</li> 
 </ul>
