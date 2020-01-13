@@ -21,9 +21,9 @@
   <li> docker-compose up -d </li>
   <li> docker-compose exec web composer install </li>
   <li> docker-compose exec web php bin/console doctrine:database:create </li>
-  <li> docker-compose exec web php bin/console make:migration </li>
-  <li> docker-compose exec web php bin/console </li>
-  <li> doctrine:migrations:migrate </li>
+  <li> docker-compose exec web php bin/console mdoctrine:schema:update </li> 
+  <li>yarn install </li>
+  <li>yarn run webpack</li> 
 </ul>
  
 <h2>API endpoints</h2>
