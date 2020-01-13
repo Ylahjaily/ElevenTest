@@ -1,15 +1,17 @@
 import React  from 'react';
 import {connect} from "react-redux";
-import {addPost} from '../../actions/postsActions';
+import {addAstronaute} from '../../actions/astronautesActions';
 import {Redirect} from 'react-router-dom'
 
-class AddNewPostForm extends React.Component
+class AstronauteForm extends React.Component
 {
 
     constructor(props){
         super(props)
         this.state = {
-            wording : '',
+            name : '',
+            age : '',
+            description : '',
             errors : {},
             loading : false,
             done : false
@@ -40,7 +42,9 @@ class AddNewPostForm extends React.Component
         // Data Validation
 
         let errors = {};
-        if(this.state.wording === '') errors.name = 'Message cannot be Empty'
+        if(this.state.name === '') errors.name = 'name cannot be Empty'
+        if(this.state.age === '') errors.age = 'age cannot be Empty'
+        if(this.state.description === '') errors.description = 'description cannot be Empty'
         this.setState({ errors })
 
         const isValid = Object.keys(errors).length === 0
@@ -49,10 +53,10 @@ class AddNewPostForm extends React.Component
 
         if(isValid)
         {
-            const {wording} = this.state
+            const {name,age,description} = this.state
             this.setState({loading : true})
             // Load data
-            this.props.addPost({wording})
+            this.props.addAstronaute({name,age,description})
                 .then(
                     // Success Response Case
 
@@ -70,10 +74,16 @@ class AddNewPostForm extends React.Component
         const form =  (
 
             <form onSubmit={this.handleSubmit}>
-                <h1>Sign Up</h1>
+                <h1>Add a new Astronaute !</h1>
 
-                <label htmlFor='wording'>Message</label>
-                <input type='text' id ='wording' name='wording' onChange={this.handleChange}/>
+                <label htmlFor='name'>Name</label>
+                <input type='text' id ='name' name='name' onChange={this.handleChange}/>
+
+                <label htmlFor='age'>Age</label>
+                <input type='number'  id ='age' name='age' onChange={this.handleChange}/>
+
+                <label htmlFor='description'>Description</label>
+                <input type='text'  id ='description' name='description' onChange={this.handleChange}/>
 
                 <input type='submit' value='submit'/>
             </form>
@@ -87,4 +97,4 @@ class AddNewPostForm extends React.Component
     }
 }
 
-export default connect(null, {addPost})(AddNewPostForm)
+export default connect(null, {addAstronaute})(AstronauteForm)
