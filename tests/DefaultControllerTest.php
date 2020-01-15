@@ -6,7 +6,7 @@ namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class RestControllerTest extends WebTestCase
+class DefaultControllerTest extends WebTestCase
 {
 
     public function testGetApiAstronautes()
@@ -21,23 +21,22 @@ class RestControllerTest extends WebTestCase
         $content = $response->getContent();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertJson($content);
-        $arrayContent = \json_decode($content, true);
-        $this->assertCount(10, $arrayContent);
     }
 
     public function testApiPostAstronaute()
     {
+
         $client = static::createClient([],[
             'HTTP_HOST' => 'localhost:81'
         ]);
         $client->request('POST', '/api/new/astronaute', [], [],
             [
-                'HTTP_ACCEPT' => 'application/json',
                 'Content-Type' => 'application/json',
-                'HTTP_X-AUTH-TOKEN' => 'aaa',
+                'Accept' =>'application/json'
             ],
-            '{"name": "ddskjshipsslskhsjks","age": "3322","description": "ddjdgldgljdhljhdljdhjdhljdhdfjsh"}'
+        '{name: "eee",age: "22",description: "sssss"}'
         );
+
         $response = $client->getResponse();
         $content = $response->getContent();
         $this->assertEquals(201, $response->getStatusCode());
@@ -55,7 +54,7 @@ class RestControllerTest extends WebTestCase
                 'CONTENT_TYPE' => 'application/json',
                 'HTTP_X-AUTH-TOKEN' => 'aaa',
             ],
-            '{"name": " ","age": " ","description": " "}'
+            '{"name":"","age":"","description":""}'
         );
         $response = $client->getResponse();
         $content = $response->getContent();

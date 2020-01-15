@@ -23,11 +23,12 @@ class Home extends React.Component
                 <Switch>
                     <Route exact path="/" component={AstronautesPage} />
                     <Route path="/new" component={AstronauteForm} />
-                    <Route path='/user/:id' component={AstronauteDetailsList} />
+                    <Route path='/astronaute/:id' component={AstronauteDetailsList} />
                 </Switch>
             </div>
         )
     }
 }
+
 
 export default Home;

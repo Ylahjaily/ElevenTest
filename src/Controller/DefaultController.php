@@ -5,17 +5,21 @@ namespace App\Controller;
 use App\Entity\Astronaute;
 use App\Repository\AstronauteRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Swagger\Annotations as SWG;
 
 
-class RestController extends AbstractFOSRestController
+class DefaultController extends AbstractController
 {
 
     private $astronauteRepository;
@@ -27,15 +31,8 @@ class RestController extends AbstractFOSRestController
         $this->em = $em;
     }
 
-
-    static private $postAstronauteRequiredAttributes = [
-        'name' => 'setName',
-        'description' => 'setDescription'
-    ];
-
-
     /**
-     * @Rest\Post("/api/new/astronaute")
+     * @Route("/api/new/astronaute")
      * @ParamConverter("astronaute", converter="fos_rest.request_body")
      * @SWG\Parameter(
      *     name="name",
@@ -79,17 +76,13 @@ class RestController extends AbstractFOSRestController
      *     description="Malformed request body"
      * )
      */
-    public function postAstronaute(Request $request,Astronaute $astronaute,ValidatorInterface $validator)
+    public function postAstronaute(Request $request,Astronaute $astronaute,ValidatorInterface $validator, SerializerInterface $serializer)
     {
-        foreach(static::$postAstronauteRequiredAttributes as $attribute => $setter) {
-            if(is_null($request->get($attribute))) {
-                continue;
-            }
-            $astronaute->$setter($request->get($attribute));
-        }
-        $age = $request->get('age');
-        $ageFormatted =(int) $age;
-        $astronaute->setAge($ageFormatted);
+
+
+        $astronaute->setName($request->get('name'));
+        $astronaute->setDescription($request->get('description'));
+        $astronaute->setAge($request->get('age'));
 
         $validationErrors = $validator->validate($astronaute);
 
@@ -99,42 +92,57 @@ class RestController extends AbstractFOSRestController
         foreach($validationErrors as $constraintViolation) {
             $message = $constraintViolation->getMessage();
             $propertyPath = $constraintViolation->getPropertyPath();
-            if($propertyPath === 'subscription') $propertyPath = 'subscriptionId';
             $errors[] = ['property' => $propertyPath, 'message' => $message];
         }
-
-        //if validation errors > send errors
 
         if(!empty($errors)) {
             return new JsonResponse($errors, 400);
         }
 
-        //if no errors persist and record new astronaute to database
-
         $this->em->persist($astronaute);
         $this->em->flush();
-        return $this->view($astronaute, 201);
+
+        $json = $serializer->serialize(
+            $astronaute,
+            'json', ['groups' => 'astronautes']
+        );
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->setContent($json);
+        $response->setStatusCode(201);
+        return $response;
     }
 
 
     /**
-     * @Rest\Get("/api/astronautes")
-     * @Rest\View(serializerGroups={"astronautes"})
+     * @Route("/api/astronautes")
      * @SWG\Response(
      *     response="200",
      *     description="Returns list of astronautes"
      * )
      */
-    public function getApiAstronautes()
+    public function getApiAstronautes(SerializerInterface $serializer)
     {
-        $users = $this->astronauteRepository->findAll();
-        return $this->view($users,200);
+        $astronautes = $this->astronauteRepository->findAll();
+
+        $json = $serializer->serialize(
+            $astronautes,
+            'json', ['groups' => 'astronautes']
+        );
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->setStatusCode(200);
+        $response->setContent($json);
+        return $response;
     }
 
 
     /**
-     * @Rest\Get("/api/astronautes/{id}")
-     * @Rest\View(serializerGroups={"astronautes"})
+     * @Route("/api/astronautes/{id}")
      * @SWG\Parameter(
      *     name="id",
      *     in="path",
@@ -151,9 +159,19 @@ class RestController extends AbstractFOSRestController
      *     description="User not found"
      * )
      */
-    public function getApiAstronautesById(Astronaute $astronaute)
+    public function getApiAstronautesById(Astronaute $astronaute, SerializerInterface $serializer)
     {
-        return $this->view($astronaute);
+        $json = $serializer->serialize(
+            $astronaute,
+            'json', ['groups' => 'astronautes']
+        );
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->setStatusCode(200);
+        $response->setContent($json);
+        return $response;
     }
 
 }

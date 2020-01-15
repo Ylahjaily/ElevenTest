@@ -8,11 +8,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomepageController extends AbstractController
 {
     /**
-     * @Route("/", name="app_homepage")
+     * @Route("/{reactRouting}", name="home", defaults={"reactRouting": null})
      * //This function displays the application's homepage//
      */
     public function index()
     {
-        return $this->render('homepage/homepage.html.twig');
+        return $this->render('base.html.twig');
     }
 }

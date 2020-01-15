@@ -39,8 +39,6 @@ class AstronauteForm extends React.Component
         console.log(this.state)
         e.preventDefault()
 
-        // Data Validation
-
         let errors = {};
         if(this.state.name === '') errors.name = 'name cannot be Empty'
         if(this.state.age === '') errors.age = 'age cannot be Empty'
@@ -49,21 +47,13 @@ class AstronauteForm extends React.Component
 
         const isValid = Object.keys(errors).length === 0
 
-        // If no errors => send data
-
         if(isValid)
         {
             const {name,age,description} = this.state
             this.setState({loading : true})
-            // Load data
             this.props.addAstronaute({name,age,description})
                 .then(
-                    // Success Response Case
-
                     () => {this.setState({done : true})},
-
-                    // Error Response Case
-
                     (err) => err.response.json().then(({errors}) => this.setState({errors, loading : false}))
                 )
         }

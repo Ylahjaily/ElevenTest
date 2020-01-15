@@ -1,25 +1,23 @@
-import React  from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {fetchAstronaute} from "../../actions/astronautesActions";
 import AstronauteDetailsCard from "./AstronauteDetailsCard";
 
 
-
-class AstronauteDetailsList extends React.Component
+const AstronauteDetailsList = (astronaute) =>
 {
-    componentDidMount()
-    {
-    this.props.fetchAstronaute(this.props.match.params.id);
-    }
 
-    render(){
+    useEffect(() => {
+        astronaute.fetchAstronaute(astronaute.match.params.id)
+    })
+
         return (
             <div>
-                <AstronauteDetailsCard astronaute = {this.props.astronaute} />
+                <AstronauteDetailsCard astronaute = {astronaute} />
             </div>
         )
-    }
+
 }
 
 AstronauteDetailsList.proptypes = {

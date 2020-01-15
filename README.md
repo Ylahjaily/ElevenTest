@@ -41,4 +41,4 @@ Full documentation is available at /api/doc
  
 <h2> Test</h2>
 
-<p>You can run test with command in your terminal ==> php bin/phpunit
+<p>You can run test with command in your terminal ==> docker ewec web php bin/phpunit

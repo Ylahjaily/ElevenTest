@@ -1,7 +1,7 @@
-import axios from 'axios';
-
 export const FETCH_ASTRONAUTES = 'FETCH_ASTRONAUTES';
 export const FETCH_ASTRONAUTE = 'FETCH_ASTRONAUTE';
+
+const baseUrl ='http://localhost:81'
 
 export const setAstronautes = (astronautes) => {
     return {
@@ -17,29 +17,42 @@ export const setAstronaute = (astronaute) => {
     }
 }
 
-export const fetchAstronautes = () =>{
+export const fetchAstronautes = () => {
     return dispatch => {
-        axios.get(`http://localhost:81/api/astronautes`).then(response =>
-            dispatch(setAstronautes(response.data))
-        )
+        fetch(`${baseUrl}` + '/api/astronautes', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => dispatch(setAstronautes(data)))
     }
 }
 
-export const fetchAstronaute = (id) =>{
+export const fetchAstronaute = (id) => {
     return dispatch => {
-        axios.get(`http://localhost:81/api/astronautes/${id}`).then(response =>
-            dispatch(setAstronaute(response.data))
-        )
+        fetch(`${baseUrl}`+'/api/astronautes/'+`${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => dispatch(setAstronaute(data)))
     }
 }
 
 export const addAstronaute = (data) => {
     return dispatch => {
-        return fetch('http://localhost:81/api/new/astronaute',{
+        return fetch(`${baseUrl}`+'/api/new/astronaute',{
             method : 'POST',
             body : JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
+                'Accept':'application/json'
             },
         })
     }
