@@ -2,7 +2,7 @@ import React  from 'react';
 import {Link, Switch, Route} from 'react-router-dom'
 import AstronautesPage from "../AstronautesPage/AstronautesPage";
 import AstronauteForm from "../AstronautesPage/AstronauteForm";
-import AstronauteDetailsList from "../DetailsPage/AstronauteDetailsList";
+import AstronauteDetailsList from "../AstronautesPage/AstronauteDetailsList";
 
 class Home extends React.Component
 {

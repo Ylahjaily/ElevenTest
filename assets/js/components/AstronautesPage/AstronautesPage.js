@@ -1,29 +1,26 @@
-import React  from 'react';
+import React, {useEffect} from 'react';
 import AstronautesList from "./AstronautesList"
 import {connect} from "react-redux";
-import PropTypes from "prop-types";
 import {fetchAstronautes} from '../../actions/astronautesActions'
 
-class AstronautesPage extends React.Component
+const AstronautesPage = (props) =>
 {
-    componentDidMount(){
-        this.props.fetchAstronautes();
-    }
+    const astronautes = props.astronautes
+    const fetchAstronautes = props.fetchAstronautes
 
-    render()
+    useEffect(()=>
     {
-        return (
-            <div>
-                <h1>Astronautes </h1>
-                <AstronautesList astronautes = {this.props.astronautes}/>
-            </div>
-        )
-    }
-};
+        fetchAstronautes()
+    },
+        []
+    )
 
-AstronautesPage.propTypes = {
-    astronautes : PropTypes.array.isRequired,
-    fetchAstronautes : PropTypes.func.isRequired
+    return (
+        <div>
+            <h1>Astronautes </h1>
+            <AstronautesList astronautes = {astronautes}/>
+        </div>
+    )
 }
 
 const mapStateToProps = (state) => {
