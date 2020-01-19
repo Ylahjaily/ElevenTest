@@ -36,7 +36,6 @@ class AstronauteForm extends React.Component
     }
 
     handleSubmit(e){
-        console.log(this.state)
         e.preventDefault()
 
         let errors = {};

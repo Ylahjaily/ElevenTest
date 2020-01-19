@@ -1,33 +1,30 @@
 import React  from 'react';
-import {Link, Switch, Route} from 'react-router-dom'
+import {Switch, Route,NavLink} from 'react-router-dom';
 import AstronautesPage from "../AstronautesPage/AstronautesPage";
 import AstronauteForm from "../AstronautesPage/AstronauteForm";
 import AstronauteDetailsList from "../AstronautesPage/AstronauteDetailsList";
 
-class Home extends React.Component
+export const Home = () =>
 {
-    render()
-    {
-        return (
-            <div>
+    return (
+        <div>
 
-                <ul className="nav justify-content-center">
-                    <li className="nav-item">
-                        <Link to={'/'}> Astronautes</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to={'/new'}> Add Astronaute</Link>
-                    </li>
-                </ul>
+            <ul className="nav justify-content-center">
+                <li className="nav-item">
+                    <NavLink to={'/'}> Astronautes</NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink to={'/new'}> Add Astronaute</NavLink>
+                </li>
+            </ul>
 
-                <Switch>
-                    <Route exact path="/" component={AstronautesPage} />
-                    <Route path="/new" component={AstronauteForm} />
-                    <Route path='/astronaute/:id' component={AstronauteDetailsList} />
-                </Switch>
-            </div>
-        )
-    }
+            <Switch>
+                <Route path="/" exact component={AstronautesPage} />
+                <Route path="/new" component={AstronauteForm} />
+                <Route path="/astronautes/:id" component={AstronauteDetailsList} />
+            </Switch>
+        </div>
+    )
 }
 
 

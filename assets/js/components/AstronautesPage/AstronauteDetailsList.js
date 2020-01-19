@@ -14,14 +14,14 @@ const AstronauteDetailsList = (props) =>
         []
         )
 
-        return (
-            <div>
-                <h1>details</h1>
-                <h1>{astronaute.name}</h1>
-                <h2>{astronaute.age}</h2>
-                <h3>{astronaute.description}</h3>
-            </div>
-        )
+    return (
+        <div>
+            <h1>details</h1>
+            <h1>{astronaute.name}</h1>
+            <h2>{astronaute.age}</h2>
+            <h3>{astronaute.description}</h3>
+        </div>
+    )
 }
 
 const mapStateToProps = (state) => {

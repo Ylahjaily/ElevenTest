@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -161,6 +162,10 @@ class DefaultController extends AbstractController
      */
     public function getApiAstronautesById(Astronaute $astronaute, SerializerInterface $serializer)
     {
+        if(is_null($astronaute)) {
+            throw new NotFoundHttpException();
+        }
+
         $json = $serializer->serialize(
             $astronaute,
             'json', ['groups' => 'astronautes']

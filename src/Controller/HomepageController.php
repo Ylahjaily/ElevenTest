@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomepageController extends AbstractController
 {
     /**
-     * @Route("/{reactRouting}", name="home", defaults={"reactRouting": null})
+     * @Route("/{reactRouting}",requirements={"reactRouting"=".+"}, name="home", defaults={"reactRouting": null})
      * //This function displays the application's homepage//
      */
     public function index()
