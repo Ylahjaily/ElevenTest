@@ -4,7 +4,13 @@ import {fetchAstronaute} from "../../actions/astronautesActions";
 
 const AstronauteDetailsList = (props) =>
 {
-    const astronaute = props.astronaute
+    const astronaute = {
+        id : props.astronaute.id,
+        name : props.astronaute.name,
+        description : props.astronaute.description,
+        age : props.astronaute.age
+    }
+
     const fetchAstronaute = props.fetchAstronaute
 
     useEffect(() =>

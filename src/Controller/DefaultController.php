@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Swagger\Annotations as SWG;
 
 
-class DefaultController extends AbstractController
+class DefaultController extends AbstractFOSRestController
 {
 
     private $astronauteRepository;
@@ -33,7 +33,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/api/new/astronaute")
+     * @Rest\Post("/api/new/astronaute")
      * @ParamConverter("astronaute", converter="fos_rest.request_body")
      * @SWG\Parameter(
      *     name="name",
@@ -118,7 +118,7 @@ class DefaultController extends AbstractController
 
 
     /**
-     * @Route("/api/astronautes")
+     * @Rest\Get("/api/astronautes")
      * @SWG\Response(
      *     response="200",
      *     description="Returns list of astronautes"
@@ -143,7 +143,7 @@ class DefaultController extends AbstractController
 
 
     /**
-     * @Route("/api/astronautes/{id}")
+     * @Rest\Get("/api/astronautes/{id}")
      * @SWG\Parameter(
      *     name="id",
      *     in="path",
